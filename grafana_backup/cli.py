@@ -25,7 +25,7 @@ Options:
     --version                               Get version information and exit
     --config=<filename>                     Override default configuration path
     --components=<>                         Comma separated list of individual components to backup (all by default); dashboard-versions can only be saved not restored.
-                                            <folders,folder_permissions,dashboards,datasources,alert-channels,alert-rules,organizations,users,snapshots,dashboard-versions,annotations,library_elements,teams,team_members>
+                                            <folders,folder_permissions,dashboards,datasources,alert-channels,alert-rules,organizations,users,snapshots,dashboard-versions,annotations,library_elements,teams,team_members,notification_policys>
 
     --no-archive                            Skip archive creation and do not delete unarchived files
                                             (used for troubleshooting purposes)

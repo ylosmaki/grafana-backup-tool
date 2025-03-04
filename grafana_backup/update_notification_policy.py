@@ -24,6 +24,8 @@ def main(args, settings, file_path):
             data = f.read()
 
         notification_policies = json.loads(data)
+        http_post_headers['x-disable-provenance'] = '*'
+
         result = update_notification_policy(json.dumps(
             notification_policies), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
         print("update notification_policy, status: {0}, msg: {1}".format(

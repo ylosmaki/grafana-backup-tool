@@ -58,7 +58,7 @@ def get_all_notification_policies_in_grafana(grafana_url, http_get_headers, veri
 
 def save_notification_policies(file_name, notification_policies, folder_path, pretty_print):
     file_path = save_json(file_name, notification_policies,
-                          folder_path, 'notification_policys', pretty_print)
+                          folder_path, 'notification_policy', pretty_print)
     print_horizontal_line()
     print("notification policies are saved to {0}".format(file_path))
     print_horizontal_line()
