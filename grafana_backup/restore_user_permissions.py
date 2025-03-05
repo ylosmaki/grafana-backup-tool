@@ -8,8 +8,8 @@ def main(args, settings):
     users_file = args.get('<users_filename>', None)
     print("got users_file {0}".format(users_file))
 
-    (status, json_resp, uid_support, paging_support) = api_checks(settings)
-
+    (status, json_resp, dashboard_uid_support, datasource_uid_support,
+     paging_support, contact_point_support) = api_checks(settings)
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
         sys.exit(1)
