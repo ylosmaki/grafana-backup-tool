@@ -78,9 +78,6 @@ def main(args, settings):
             print(str(e))
             sys.exit(1)
 
-    # TODO:
-    # Shell game magic warning: restore_function keys require the 's'
-    # to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
     # Folders must be restored before Library-Elements
     restore_functions['folder'] = create_folder
@@ -125,18 +122,17 @@ def restore_components(args, settings, restore_functions, tmpdir):
 
         # Restore only the components that provided via an argument
         # but must also exist in extracted archive
-        # NOTICE: ext[:-1] cuts the 's' off in order to match the file extension name to be restored...
         for ext in arg_components_list:
             if sys.version_info >= (3,):
-                for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext[:-1]), recursive=True):
+                for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext), recursive=True):
                     print('restoring {0}: {1}'.format(ext, file_path))
-                    restore_functions[ext[:-1]](args, settings, file_path)
+                    restore_functions[ext](args, settings, file_path)
             else:
                 for root, dirnames, filenames in os.walk('{0}'.format(tmpdir)):
-                    for filename in fnmatch.filter(filenames, '*.{0}'.format(ext[:-1])):
+                    for filename in fnmatch.filter(filenames, '*.{0}'.format(ext)):
                         file_path = os.path.join(root, filename)
                         print('restoring {0}: {1}'.format(ext, file_path))
-                        restore_functions[ext[:-1]](args, settings, file_path)
+                        restore_functions[ext](args, settings, file_path)
     else:
         # Restore every component included in extracted archive
         for ext in restore_functions.keys():

@@ -13,7 +13,7 @@ def main(args, settings):
     debug = settings.get('DEBUG')
     pretty_print = settings.get('PRETTY_PRINT')
 
-    folder_path = '{0}/library-elements/{1}'.format(backup_dir, timestamp)
+    folder_path = '{0}/library_elements/{1}'.format(backup_dir, timestamp)
     log_file = 'library_elements_{0}.txt'.format(timestamp)
 
     if not os.path.exists(folder_path):
@@ -61,4 +61,3 @@ def get_individual_library_elements_and_save(library_elements, folder_path, log_
                 )
                 f.write('{0}\t{1}\n'.format(to_python2_and_3_compatible_string(str(library_element_identifier)),
                                             to_python2_and_3_compatible_string(library_element['name'])))
-

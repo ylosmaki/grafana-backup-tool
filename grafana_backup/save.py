@@ -28,21 +28,21 @@ def main(args, settings):
     arg_components = args.get('--components', False)
     arg_no_archive = args.get('--no-archive', False)
 
-    backup_functions = {'dashboards': save_dashboards,
-                        'datasources': save_datasources,
-                        'folders': save_folders,
-                        'alert-channels': save_alert_channels,
-                        'organizations': save_orgs,
-                        'users': save_users,
-                        'snapshots': save_snapshots,
-                        'versions': save_dashboard_versions,  # left for backwards compatibility
-                        'dashboard-versions': save_dashboard_versions,
-                        'annotations': save_annotations,
-                        'library-elements': save_library_elements,
-                        'teams': save_teams,
-                        'team-members': save_team_members,
-                        'alert-rules': save_alert_rules,
-                        'contact-points': save_contact_points,
+    backup_functions = {'dashboard': save_dashboards,
+                        'datasource': save_datasources,
+                        'folder': save_folders,
+                        'alert-channel': save_alert_channels,
+                        'organization': save_orgs,
+                        'user': save_users,
+                        'snapshot': save_snapshots,
+                        'version': save_dashboard_versions,  # left for backwards compatibility
+                        'dashboard-version': save_dashboard_versions,
+                        'annotation': save_annotations,
+                        'library-element': save_library_elements,
+                        'team': save_teams,
+                        'team-member': save_team_members,
+                        'alert-rule': save_alert_rules,
+                        'contact-point': save_contact_points,
                         'notification-policy': save_notification_policies,
                         'notification-template': save_notification_templates
                         }

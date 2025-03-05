@@ -24,8 +24,10 @@ Options:
     -h --help                               Show this help message and exit
     --version                               Get version information and exit
     --config=<filename>                     Override default configuration path
-    --components=<>                         Comma separated list of individual components to backup (all by default); dashboard-versions can only be saved not restored.
-                                            <folders,folder_permissions,dashboards,datasources,alert-channels,alert-rules,organizations,users,snapshots,dashboard-versions,annotations,library_elements,teams,team_members,notification_policys>
+    --components=<>                         Comma separated list of individual components to backup (all by default).
+                                            Dashboard-versions can only be saved not restored.
+                                            Delete implemented only to <dashboard,datasource,folder,alert_channel,snapshot,annotation,library_element,team_member>
+                                            <folder,folder_permission,dashboard,datasource,alert-channel,alert-rule,organization,user,snapshot,dashboard-version,annotation,library_element,team,team_member,contact_point,notification_policy,notification-template>
 
     --no-archive                            Skip archive creation and do not delete unarchived files
                                             (used for troubleshooting purposes)

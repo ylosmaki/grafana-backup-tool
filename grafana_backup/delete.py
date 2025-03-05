@@ -15,14 +15,14 @@ def main(args, settings):
 
     # By default, teams should not be deleted. Sinces teams don't have unique ids across instances, they would be
     # recreated with different ids, therefore loosing references to folder permissions and team members.
-    delete_functions = {'dashboards': delete_dashboards,
-                        'datasources': delete_datasources,
-                        'folders': delete_folders,
-                        'alert-channels': delete_alert_channels,
-                        'snapshots': delete_snapshots,
-                        'annotations': delete_annotations,
-                        'library-elements': delete_library_elements,
-                        'team-members': delete_team_members}
+    delete_functions = {'dashboard': delete_dashboards,
+                        'datasource': delete_datasources,
+                        'folder': delete_folders,
+                        'alert-channel': delete_alert_channels,
+                        'snapshot': delete_snapshots,
+                        'annotation': delete_annotations,
+                        'library-element': delete_library_elements,
+                        'team-member': delete_team_members}
 
     (status, json_resp, dashboard_uid_support,
      datasource_uid_support, paging_support, is_contact_point_available) = api_checks(settings)
@@ -37,7 +37,7 @@ def main(args, settings):
     settings.update({'PAGING_SUPPORT': paging_support})
 
     if arg_components:
-        arg_components_list = arg_components.split(',')
+        arg_components_list = arg_components.replace("_", "-").split(',')
 
         # Delete only the components that provided via an argument
         for delete_function in arg_components_list:
