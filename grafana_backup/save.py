@@ -9,6 +9,7 @@ from grafana_backup.save_dashboard_versions import main as save_dashboard_versio
 from grafana_backup.save_annotations import main as save_annotations
 from grafana_backup.save_contact_points import main as save_contact_points
 from grafana_backup.save_notification_policies import main as save_notification_policies
+from grafana_backup.save_notification_templates import main as save_notification_templates
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.influx import main as influx
@@ -43,6 +44,7 @@ def main(args, settings):
                         'alert-rules': save_alert_rules,
                         'contact-points': save_contact_points,
                         'notification-policy': save_notification_policies,
+                        'notification-template': save_notification_templates
                         }
 
     (status,
