@@ -14,6 +14,7 @@ from grafana_backup.create_team_member import main as create_team_member
 from grafana_backup.create_library_element import main as create_library_element
 from grafana_backup.create_contact_point import main as create_contact_point
 from grafana_backup.update_notification_policy import main as update_notification_policy
+from grafana_backup.update_notification_template import main as update_notification_template
 from grafana_backup.s3_download import main as s3_download
 from grafana_backup.azure_storage_download import main as azure_storage_download
 from grafana_backup.gcs_download import main as gcs_download
@@ -77,9 +78,6 @@ def main(args, settings):
             print(str(e))
             sys.exit(1)
 
-    # TODO:
-    # Shell game magic warning: restore_function keys require the 's'
-    # to be removed in order to match file extension names...
     restore_functions = collections.OrderedDict()
     # Folders must be restored before Library-Elements
     restore_functions['folder'] = create_folder
@@ -97,8 +95,8 @@ def main(args, settings):
     restore_functions['folder_permission'] = update_folder_permissions
     restore_functions['alert_rule'] = create_alert_rule
     restore_functions['contact_point'] = create_contact_point
-    # There are some issues of notification policy restore api, it will lock the notification policy page and cannot be edited.
-    # restore_functions['notification_policys'] = update_notification_policy
+    restore_functions['notification_policy'] = update_notification_policy # Note! Can cause conflict in case policy is provisioned
+    restore_functions['notification_template'] = update_notification_template
 
     if sys.version_info >= (3,):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -124,18 +122,17 @@ def restore_components(args, settings, restore_functions, tmpdir):
 
         # Restore only the components that provided via an argument
         # but must also exist in extracted archive
-        # NOTICE: ext[:-1] cuts the 's' off in order to match the file extension name to be restored...
         for ext in arg_components_list:
             if sys.version_info >= (3,):
-                for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext[:-1]), recursive=True):
+                for file_path in glob('{0}/**/*.{1}'.format(tmpdir, ext), recursive=True):
                     print('restoring {0}: {1}'.format(ext, file_path))
-                    restore_functions[ext[:-1]](args, settings, file_path)
+                    restore_functions[ext](args, settings, file_path)
             else:
                 for root, dirnames, filenames in os.walk('{0}'.format(tmpdir)):
-                    for filename in fnmatch.filter(filenames, '*.{0}'.format(ext[:-1])):
+                    for filename in fnmatch.filter(filenames, '*.{0}'.format(ext)):
                         file_path = os.path.join(root, filename)
                         print('restoring {0}: {1}'.format(ext, file_path))
-                        restore_functions[ext[:-1]](args, settings, file_path)
+                        restore_functions[ext](args, settings, file_path)
     else:
         # Restore every component included in extracted archive
         for ext in restore_functions.keys():

@@ -9,6 +9,7 @@ from grafana_backup.save_dashboard_versions import main as save_dashboard_versio
 from grafana_backup.save_annotations import main as save_annotations
 from grafana_backup.save_contact_points import main as save_contact_points
 from grafana_backup.save_notification_policies import main as save_notification_policies
+from grafana_backup.save_notification_templates import main as save_notification_templates
 from grafana_backup.archive import main as archive
 from grafana_backup.s3_upload import main as s3_upload
 from grafana_backup.influx import main as influx
@@ -27,22 +28,23 @@ def main(args, settings):
     arg_components = args.get('--components', False)
     arg_no_archive = args.get('--no-archive', False)
 
-    backup_functions = {'dashboards': save_dashboards,
-                        'datasources': save_datasources,
-                        'folders': save_folders,
-                        'alert-channels': save_alert_channels,
-                        'organizations': save_orgs,
-                        'users': save_users,
-                        'snapshots': save_snapshots,
-                        'versions': save_dashboard_versions,  # left for backwards compatibility
-                        'dashboard-versions': save_dashboard_versions,
-                        'annotations': save_annotations,
-                        'library-elements': save_library_elements,
-                        'teams': save_teams,
-                        'team-members': save_team_members,
-                        'alert-rules': save_alert_rules,
-                        'contact-points': save_contact_points,
+    backup_functions = {'dashboard': save_dashboards,
+                        'datasource': save_datasources,
+                        'folder': save_folders,
+                        'alert-channel': save_alert_channels,
+                        'organization': save_orgs,
+                        'user': save_users,
+                        'snapshot': save_snapshots,
+                        'version': save_dashboard_versions,  # left for backwards compatibility
+                        'dashboard-version': save_dashboard_versions,
+                        'annotation': save_annotations,
+                        'library-element': save_library_elements,
+                        'team': save_teams,
+                        'team-member': save_team_members,
+                        'alert-rule': save_alert_rules,
+                        'contact-point': save_contact_points,
                         'notification-policy': save_notification_policies,
+                        'notification-template': save_notification_templates
                         }
 
     (status,

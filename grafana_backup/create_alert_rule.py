@@ -31,12 +31,14 @@ def main(args, settings, file_path):
         uid = alert_rule['uid']
         get_response= get_alert_rule(uid, grafana_url, http_get_headers, verify_ssl, client_cert, debug)
         status_code=get_response[0]
+        http_post_headers['x-disable-provenance'] = '*'
+
         print("Got a code: {0}", status_code)
         if status_code == 404:
-           http_post_headers['x-disable-provenance']='*'
-           result = create_alert_rule(json.dumps(alert_rule), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+            result = create_alert_rule(json.dumps(alert_rule), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
         else:
-           result = update_alert_rule(alert_rule['uid'], json.dumps(alert_rule), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+            result = update_alert_rule(alert_rule['uid'], json.dumps(alert_rule), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
+
         print("create alert rule: {0}, status: {1}, msg: {2}".format(alert_rule['title'], result[0], result[1]))
     else:
         print("Unable to create alert rules, requires Grafana version {0} or above. Current version is {1}".format(minimum_version, grafana_version))

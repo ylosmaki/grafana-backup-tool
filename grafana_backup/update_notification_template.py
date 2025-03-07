@@ -1,5 +1,5 @@
 import json
-from grafana_backup.dashboardApi import update_notification_policy, get_grafana_version
+from grafana_backup.dashboardApi import update_notification_template, get_grafana_version
 from packaging import version
 
 
@@ -23,13 +23,13 @@ def main(args, settings, file_path):
         with open(file_path, 'r') as f:
             data = f.read()
 
-        notification_policies = json.loads(data)
+        notification_template = json.loads(data)
         http_post_headers['x-disable-provenance'] = '*'
 
-        result = update_notification_policy(json.dumps(
-            notification_policies), grafana_url, http_post_headers, verify_ssl, client_cert, debug)
-        print("update notification_policy, status: {0}, msg: {1}".format(
-            result[0], result[1]))
+        result = update_notification_template(
+            notification_template['name'], json.dumps(notification_template), grafana_url, http_post_headers, verify_ssl, client_cert, debug
+        )
+        print("update notification template: {0}, status: {1}, msg: {2}".format(notification_template['name'], result[0], result[1]))
     else:
-        print("Unable to update notification policy, requires Grafana version {0} or above. Current version is {1}".format(
+        print("Unable to update notification templates, requires Grafana version {0} or above. Current version is {1}".format(
             minimum_version, grafana_version))

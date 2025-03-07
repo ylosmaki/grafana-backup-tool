@@ -181,6 +181,7 @@ def search_annotations(grafana_url, ts_from, ts_to, http_get_headers, verify_ssl
     # alert: are created by Grafana itself, can NOT be managed by the api
     url = '{0}/api/annotations?type=annotation&limit=5000&from={1}&to={2}'.format(
         grafana_url, ts_from, ts_to)
+    print("search annotations in grafana: {0}".format(url))
     (status_code, content) = send_grafana_get(
         url, http_get_headers, verify_ssl, client_cert, debug)
     return (status_code, content)
@@ -245,6 +246,7 @@ def delete_alert_channel_by_id(id_, grafana_url, http_post_headers, verify_ssl, 
 
 def search_alerts(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
     url = '{0}/api/alerts'.format(grafana_url)
+    print("search alerts in grafana: {0}".format(url))
     (status_code, content) = send_grafana_get(
         url, http_get_headers, verify_ssl, client_cert, debug)
     return (status_code, content)
@@ -467,22 +469,36 @@ def add_user_to_org(org_id, payload, grafana_url, http_post_headers, verify_ssl,
 
 
 def search_contact_points(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    print("search contact points in grafana: {0}".format('{0}/api/v1/provisioning/contact-points'.format(grafana_url)))
     return send_grafana_get('{0}/api/v1/provisioning/contact-points'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
 
 
 def create_contact_point(json_palyload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_post('{0}/api/v1/provisioning/contact-points'.format(grafana_url), json_palyload, http_post_headers, verify_ssl, client_cert, debug)
 
+
 def update_contact_point(uid, json_palyload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_put('{0}/api/v1/provisioning/contact-points/{1}'.format(grafana_url, uid), json_palyload, http_post_headers, verify_ssl, client_cert, debug)
 
 
 def search_notification_policies(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    print("search notification policies in grafana: {0}".format('{0}/api/v1/provisioning/policies'.format(grafana_url)))
     return send_grafana_get('{0}/api/v1/provisioning/policies'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
 
 
 def update_notification_policy(json_palyload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
     return send_grafana_put('{0}/api/v1/provisioning/policies'.format(grafana_url), json_palyload, http_post_headers, verify_ssl, client_cert, debug)
+
+
+def search_notification_templates(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
+    print("search notification templates in grafana: {0}".format('{0}/api/v1/provisioning/templates'.format(grafana_url)))
+    return send_grafana_get('{0}/api/v1/provisioning/templates'.format(grafana_url), http_get_headers, verify_ssl, client_cert, debug)
+
+def update_notification_template(name, json_payload, grafana_url, http_post_headers, verify_ssl, client_cert, debug):
+    url_safe_name = requests.utils.quote(name)
+    url = '{0}/api/v1/provisioning/templates/{1}'.format(grafana_url, url_safe_name)
+
+    return send_grafana_put(url, json_payload, http_post_headers, verify_ssl, client_cert, debug)
 
 
 def get_grafana_version(grafana_url, verify_ssl, http_get_headers):
@@ -513,9 +529,14 @@ def get_grafana_version(grafana_url, verify_ssl, http_get_headers):
 def send_grafana_get(url, http_get_headers, verify_ssl, client_cert, debug):
     r = requests.get(url, headers=http_get_headers,
                      verify=verify_ssl, cert=client_cert)
+    try:
+        status_message = r.json()
+    except ValueError:
+        status_message = to_python2_and_3_compatible_string(r.text)
+
     if debug:
         log_response(r)
-    return (r.status_code, r.json())
+    return (r.status_code, status_message)
 
 
 def send_grafana_post(url, json_payload, http_post_headers, verify_ssl=False, client_cert=None, debug=True):

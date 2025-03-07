@@ -6,8 +6,7 @@ from grafana_backup.dashboardApi import search_alerts, pause_alert
 
 
 def main(args, settings):
-    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support) = api_checks(settings)
-
+    (status, json_resp, dashboard_uid_support, datasource_uid_support, paging_support, contact_point_support) = api_checks(settings)
     # Do not continue if API is unavailable or token is not valid
     if not status == 200:
         print("server status is not ok: {0}".format(json_resp))
