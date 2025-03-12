@@ -19,14 +19,15 @@ def main(args, settings):
 
     if grafana_version_string:
         grafana_version = version.parse(grafana_version_string)
-
-    try:
-        grafana_version = get_grafana_version(grafana_url, verify_ssl, http_get_headers)
-    except KeyError as error:
-        if not grafana_version:
-            raise Exception("Grafana version is not set.") from error
+    else:
+        try:
+            grafana_version = get_grafana_version(grafana_url, verify_ssl, http_get_headers)
+        except KeyError as error:
+            if not grafana_version:
+                raise Exception("Grafana version is not set.") from error
 
     minimum_version = version.parse('9.0.0')
+
     if minimum_version <= grafana_version:
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
@@ -36,8 +37,8 @@ def main(args, settings):
         print("Unable to save notification templates, requires Grafana version {0} or above. Current version is {1}".format(
             minimum_version, grafana_version))
 
-    # if not os.path.exists(folder_path):
-    #     os.makedirs(folder_path)
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
 
 
 def get_all_notification_templates_in_grafana(grafana_url, http_get_headers, verify_ssl, client_cert, debug):
